@@ -1,0 +1,141 @@
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    z-index: 100;
+    border-bottom: 1px solid rgba(255, 255, 255, .06);
+}
+
+.navbar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: opacity var(--transition-fast);
+}
+
+.navbar-brand:hover {
+    opacity: .85;
+}
+
+.navbar-logo {
+    font-size: 1.5rem;
+}
+
+.navbar-title {
+    font-size: 1.25rem;
+    font-weight: 800;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.navbar-links {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.navbar-link {
+    padding: 8px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    transition: all var(--transition-fast);
+    text-decoration: none;
+}
+
+.navbar-link:hover {
+    color: var(--text);
+    background: rgba(255, 255, 255, .05);
+}
+
+.navbar-link.active {
+    color: var(--primary-400);
+    background: rgba(99, 102, 241, .1);
+}
+
+.navbar-logout {
+    margin-left: 8px;
+}
+
+.navbar-toggle {
+    display: none;
+    padding: 8px;
+}
+
+.hamburger {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 22px;
+}
+
+.hamburger span {
+    display: block;
+    height: 2px;
+    background: var(--text);
+    border-radius: 2px;
+    transition: all var(--transition-fast);
+}
+
+.hamburger.open span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.open span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.open span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+}
+
+@media (max-width: 768px) {
+    .navbar-toggle {
+        display: flex;
+    }
+
+    .navbar-links {
+        position: fixed;
+        top: 64px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: var(--bg);
+        flex-direction: column;
+        padding: 24px;
+        gap: 8px;
+        transform: translateX(100%);
+        transition: transform var(--transition-base);
+        border-top: 1px solid var(--border);
+    }
+
+    .navbar-links.open {
+        transform: translateX(0);
+    }
+
+    .navbar-link {
+        width: 100%;
+        padding: 14px 16px;
+        font-size: 1rem;
+    }
+
+    .navbar-logout {
+        margin: 16px 0 0;
+        width: 100%;
+        justify-content: center;
+        padding: 14px;
+    }
+}

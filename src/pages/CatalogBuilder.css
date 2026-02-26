@@ -1,0 +1,143 @@
+.builder-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.builder-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.builder-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: .2;
+    animation: float 6s ease-in-out infinite;
+}
+
+.builder-orb-1 {
+    width: 500px;
+    height: 500px;
+    top: -150px;
+    right: -150px;
+}
+
+.builder-orb-2 {
+    width: 400px;
+    height: 400px;
+    bottom: -100px;
+    left: -100px;
+    animation-delay: 2s;
+}
+
+.builder-orb-3 {
+    width: 300px;
+    height: 300px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--primary-500);
+    animation-delay: 4s;
+}
+
+.builder-content {
+    text-align: center;
+    z-index: 1;
+    padding: 24px;
+    max-width: 500px;
+}
+
+.builder-logo-wrapper {
+    width: 96px;
+    height: 96px;
+    margin: 0 auto 24px;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+}
+
+.builder-logo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.builder-logo-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    color: white;
+    font-weight: 800;
+}
+
+.builder-title {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, var(--text), var(--primary-300));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.builder-step {
+    font-size: 1.063rem;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+    min-height: 26px;
+}
+
+.builder-progress-track {
+    width: 100%;
+    height: 6px;
+    background: var(--gray-800);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.builder-progress-fill {
+    height: 100%;
+    border-radius: var(--radius-full);
+    transition: width 100ms linear;
+}
+
+.builder-progress-num {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.builder-quote {
+    margin-top: 36px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.builder-quote-icon {
+    font-size: 2rem;
+}
+
+.builder-quote p {
+    font-size: 1.063rem;
+    color: var(--text-secondary);
+    font-style: italic;
+    max-width: 400px;
+}
+
+.builder-info {
+    margin-top: 32px;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+}
