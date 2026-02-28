@@ -78,6 +78,11 @@ export default function Onboarding() {
             toast('Completa el nombre, WhatsApp y correo de tu negocio', 'error');
             return;
         }
+
+        // Generar un enlace personalizado y único a partir del nombre
+        const slug = store.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        dispatch({ type: 'UPDATE_STORE', payload: { slug } });
+
         setSubStep(1);
     };
 

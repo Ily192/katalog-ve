@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
+import { supabase } from '../lib/supabase';
 import './Login.css';
 
 export default function Login() {
@@ -10,23 +11,69 @@ export default function Login() {
     const [form, setForm] = useState({ name: '', email: '', password: '' });
     const [loading, setLoading] = useState(false);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (!form.email || !form.password) {
             toast('Completa todos los campos', 'error');
             return;
         }
         setLoading(true);
-        // Simulate auth
-        setTimeout(() => {
-            dispatch({
-                type: 'SET_USER',
-                payload: { name: form.name || form.email.split('@')[0], email: form.email }
-            });
-            toast(`¡Bienvenido${isRegister ? '' : ' de vuelta'}, ${form.name || form.email.split('@')[0]}! 🎉`, 'success');
-            navigate('/setup');
+
+        try {
+            if (isRegister) {
+                // Registrar nuevo usuario
+                const { error, data } = await supabase.auth.signUp({
+                    email: form.email,
+                    password: form.password,
+                    options: { data: { name: form.name } }
+                });
+
+                if (error) throw error;
+
+                toast('¡Cuenta creada exitosamente! Ahora inicias sesión automáticamente.', 'success');
+                // Si la configuración de Supabase autologuea:
+                if (data?.session) {
+                    dispatch({
+                        type: 'SET_USER',
+                        payload: { id: data.user.id, email: data.user.email, name: form.name || form.email.split('@')[0] }
+                    });
+                    navigate('/setup');
+                } else {
+                    // Si requiere confirmación o no trae sesión
+                    setIsRegister(false);
+                    setForm(prev => ({ ...prev, password: '' }));
+                }
+
+            } else {
+                // Iniciar sesión
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email: form.email,
+                    password: form.password
+                });
+
+                if (error) throw error;
+
+                dispatch({
+                    type: 'SET_USER',
+                    payload: {
+                        id: data.user.id,
+                        email: data.user.email,
+                        name: data.user.user_metadata?.name || data.user.email.split('@')[0]
+                    }
+                });
+                toast(`¡Bienvenido de vuelta, ${data.user.user_metadata?.name || data.user.email.split('@')[0]}! 🎉`, 'success');
+                navigate('/setup');
+            }
+        } catch (err) {
+            // Check for specific login errors to give a better alert
+            if (err.message === 'Invalid login credentials' || err.message.includes('credential')) {
+                toast('Correo o contraseña incorrectos. Si no tienes cuenta, regístrate primero.', 'error');
+            } else {
+                toast(`Error: ${err.message}`, 'error');
+            }
+        } finally {
             setLoading(false);
-        }, 800);
+        }
     };
 
     return (

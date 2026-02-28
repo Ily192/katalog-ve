@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useReducer, useCallback } from 'react';
+import React, { createContext, useContext, useReducer, useCallback, useEffect } from 'react';
+import { supabase } from '../lib/supabase';
 
 const AppContext = createContext(null);
 
@@ -78,6 +79,7 @@ const initialState = {
     // Store config
     store: {
         name: '',
+        slug: '',
         description: '',
         logo: null,
         logoPreview: '',
@@ -224,6 +226,40 @@ export function AppProvider({ children }) {
         const id = ++toastCounter;
         dispatch({ type: 'ADD_TOAST', payload: { id, message, type } });
         setTimeout(() => dispatch({ type: 'REMOVE_TOAST', payload: id }), 4000);
+    }, []);
+
+    useEffect(() => {
+        // Restaurar sesión al cargar
+        supabase.auth.getSession().then(({ data: { session } }) => {
+            if (session) {
+                dispatch({
+                    type: 'SET_USER',
+                    payload: {
+                        id: session.user.id,
+                        email: session.user.email,
+                        name: session.user.user_metadata?.name || session.user.email.split('@')[0]
+                    }
+                });
+            }
+        }).catch(err => console.warn('Supabase not configured:', err));
+
+        // Escuchar cambios de sesión
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+            if (event === 'SIGNED_IN' && session) {
+                dispatch({
+                    type: 'SET_USER',
+                    payload: {
+                        id: session.user.id,
+                        email: session.user.email,
+                        name: session.user.user_metadata?.name || session.user.email.split('@')[0]
+                    }
+                });
+            } else if (event === 'SIGNED_OUT') {
+                dispatch({ type: 'LOGOUT' });
+            }
+        });
+
+        return () => subscription?.unsubscribe();
     }, []);
 
     return (

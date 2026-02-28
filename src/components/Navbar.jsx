@@ -16,7 +16,7 @@ export default function Navbar() {
     const links = [
         { to: '/setup', label: '⚙️ Configurar', id: 'nav-setup' },
         { to: '/products', label: '📦 Productos', id: 'nav-products' },
-        { to: '/store', label: '🏪 Mi Tienda', id: 'nav-store' },
+        { to: `/store/${state.store.slug || ''}`, label: '🏪 Mi Tienda', id: 'nav-store' },
         { to: '/dashboard', label: '📊 Dashboard', id: 'nav-dashboard' },
     ];
 

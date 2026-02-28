@@ -29,9 +29,9 @@ export default function Dashboard() {
     };
 
     const handleCopyLink = () => {
-        const link = `${window.location.origin}/store`;
+        const link = `${window.location.origin}/store/${store.slug || ''}`;
         navigator.clipboard.writeText(link);
-        toast('¡Enlace copiado al portapapeles! 📋', 'success');
+        toast(`¡Enlace copiado al portapapeles! 📋 URL única: /store/${store.slug || ''}`, 'success');
     };
 
     return (
@@ -43,13 +43,21 @@ export default function Dashboard() {
                 </div>
 
                 {/* Quick Actions */}
-                <div className="dash-actions" id="dashboard-actions">
-                    <button className="btn btn-primary" onClick={handleCopyLink}>
-                        🔗 Copiar enlace de tienda
-                    </button>
-                    <button className="btn btn-outline" onClick={handleSendReminder} disabled={reminderSent}>
-                        🔔 {reminderSent ? 'Recordatorio activado ✓' : 'Activar recordatorio semanal'}
-                    </button>
+                <div className="dash-actions" id="dashboard-actions" style={{ flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'center', width: '100%', maxWidth: '400px' }}>
+                        <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Tu enlace personalizado único:</p>
+                        <code style={{ background: 'var(--bg-elevated)', padding: '10px 16px', borderRadius: 'var(--radius-md)', width: '100%', textAlign: 'center', border: '1px solid var(--border)', fontSize: '0.875rem', overflowWrap: 'anywhere' }}>
+                            {window.location.origin}/store/<strong style={{ color: 'var(--primary-400)' }}>{store.slug || ''}</strong>
+                        </code>
+                    </div>
+                    <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', justifyContent: 'center' }}>
+                        <button className="btn btn-primary" onClick={handleCopyLink}>
+                            🔗 Copiar enlace
+                        </button>
+                        <button className="btn btn-outline" onClick={handleSendReminder} disabled={reminderSent}>
+                            🔔 {reminderSent ? 'Recordatorio activado ✓' : 'Activar recordatorio semanal'}
+                        </button>
+                    </div>
                 </div>
 
                 {/* Metrics Cards */}
