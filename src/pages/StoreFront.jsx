@@ -94,6 +94,7 @@ export default function StoreFront() {
     return (
         <div className="storefront" style={{
             '--store-primary': store.brandColor || '#6366f1',
+            '--store-primary-transparent': (store.brandColor || '#6366f1') + '40',
             '--store-accent': store.accentColor || '#10b981',
         }}>
             {/* ========= HEADER ========= */}

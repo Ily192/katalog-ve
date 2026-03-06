@@ -157,7 +157,7 @@
 
 .sf-product-card:hover {
     transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
+    box-shadow: 0 10px 25px -5px var(--store-primary-transparent, rgba(0, 0, 0, 0.1));
     border-color: var(--store-primary, var(--primary-500));
 }
 
@@ -184,6 +184,8 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    /* Mantiene la proporción ideal 1:1 */
+    object-position: center;
     transition: transform var(--transition-slow);
 }
 
@@ -229,6 +231,7 @@
     margin-bottom: 12px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }

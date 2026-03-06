@@ -3,6 +3,7 @@ import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { useApp } from './context/AppContext';
 import Navbar from './components/Navbar';
 import Toasts from './components/Toasts';
+import ProductTour from './components/ProductTour';
 import Login from './pages/Login';
 import Onboarding from './pages/Onboarding';
 import ProductManager from './pages/ProductManager';
@@ -23,6 +24,7 @@ export default function App() {
     return (
         <div className="app">
             <Toasts />
+            <ProductTour />
             {state.isAuthenticated && <Navbar />}
             <Routes>
                 <Route path="/login" element={<Login />} />

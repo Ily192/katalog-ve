@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useApp, sanitizeText, sanitizePrice, sanitizeStock, sanitizeUrl } from '../context/AppContext';
 import Papa from 'papaparse';
 import JSZip from 'jszip';
+import imageCompression from 'browser-image-compression';
 import './ProductManager.css';
 
 // ==========================================
@@ -49,7 +50,7 @@ export default function ProductManager() {
     // ==========================================
     // Image upload for manual
     // ==========================================
-    const handleImageUpload = (e) => {
+    const handleImageUpload = async (e) => {
         const file = e.target.files?.[0];
         if (!file) return;
 
@@ -59,17 +60,28 @@ export default function ProductManager() {
             toast('Formato de imagen no soportado. Usa JPG, PNG, WebP o GIF.', 'error');
             return;
         }
-        // Security: max file size 5MB
-        if (file.size > 5 * 1024 * 1024) {
-            toast('La imagen es muy grande. Máx. 5 MB.', 'error');
-            return;
-        }
 
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-            setForm(f => ({ ...f, image: file, imagePreview: ev.target.result }));
-        };
-        reader.readAsDataURL(file);
+        toast('Optimizando imagen...', 'info');
+
+        try {
+            const options = {
+                maxSizeMB: 0.5,
+                maxWidthOrHeight: 1024,
+                useWebWorker: true,
+                fileType: 'image/webp'
+            };
+            const compressedFile = await imageCompression(file, options);
+
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                setForm(f => ({ ...f, image: compressedFile, imagePreview: ev.target.result }));
+                toast('Imagen optimizada y ajustada con éxito', 'success');
+            };
+            reader.readAsDataURL(compressedFile);
+        } catch (error) {
+            console.error('Error compressing image:', error);
+            toast('Ocurrió un error al optimizar la imagen', 'error');
+        }
     };
 
     // ==========================================
@@ -385,6 +397,7 @@ export default function ProductManager() {
                                         <div className="pm-image-placeholder">
                                             <span>📷</span>
                                             <span>Foto del producto</span>
+                                            <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '4px' }}>Ideal: 1:1 (Cuadrada)</span>
                                         </div>
                                     )}
                                     <input ref={fileRef} type="file" accept="image/*" hidden onChange={handleImageUpload} />
