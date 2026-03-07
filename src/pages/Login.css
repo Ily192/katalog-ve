@@ -150,6 +150,38 @@
     flex-wrap: wrap;
 }
 
+.login-divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 10px 0;
+}
+
+.login-divider::before,
+.login-divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid var(--border);
+}
+
+.login-divider span {
+    padding: 0 10px;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+.login-google {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+    transition: all var(--transition-fast);
+}
+
+.login-google:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
 @media (max-width: 768px) {
     .login-container {
         grid-template-columns: 1fr;
